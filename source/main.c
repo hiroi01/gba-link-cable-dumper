@@ -29,7 +29,8 @@ void printmain()
 	printf("\x1b[37m");
 	printf("GBA Link Cable Dumper v1.6 by FIX94\n");
 	printf("Save Support based on SendSave by Chishm\n");
-	printf("GBA BIOS Dumper by Dark Fader\n \n");
+	printf("GBA BIOS Dumper by Dark Fader\n");
+	printf("mod v1.00 by hiroi01\n \n");
 }
 
 u8 *resbuf,*cmdbuf;
