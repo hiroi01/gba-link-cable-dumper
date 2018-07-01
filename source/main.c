@@ -419,17 +419,34 @@ int main(int argc, char *argv[])
 							FILE *f = fopen(savename,"rb");
 							if(f)
 							{
+								u8 errorFlag = 0;
 								fseek(f,0,SEEK_END);
 								readsize = ftell(f);
 								if(readsize != savesize)
+								{
+									warnError("Save has the wrong size!\n");
+									printf("[!]Danger[!] Press Z to restore this save file *forcibly* .\n");
+									printf("Press B if you want to cancel restoring this save file.\n");
+									u32 btns;
+									do {
+										PAD_ScanPads();
+										VIDEO_WaitVSync();
+										btns = PAD_ButtonsDown(0);
+									} while (!(btns&(PAD_TRIGGER_Z|PAD_BUTTON_B)));
+									if (btns & PAD_BUTTON_B) {
+										errorFlag = 1;
+									}
+								}
+								if(errorFlag)
 								{
 									command = 0;
 									warnError("ERROR: Save has the wrong size, aborting restore!\n");
 								}
 								else
 								{
+									memset(testdump,0xff,savesize);
 									rewind(f);
-									fread(testdump,readsize,1,f);
+									fread(testdump,savesize,1,f);
 								}
 								fclose(f);
 							}
